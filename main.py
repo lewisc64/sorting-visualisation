@@ -14,22 +14,21 @@ display = pygame.display.set_mode((WIDTH, HEIGHT))
 clock = pygame.time.Clock()
 
 class Button:
-    def __init__(self, text, value, x, y, width, height):
+    def __init__(self, text, x, y, width, height, func, args):
         self.text = text
-        self.value = value
         self.x = x
         self.y = y
         self.width = width
         self.height = height
+        self.func = func
+        self.args = args
 
     def handle(self, e):
         if e.type == pygame.MOUSEBUTTONUP:
             x, y = e.pos
             if x >= self.x and x < self.x + self.width:
                 if y >= self.y and y < self.y + self.height:
-                    return True
-        
-        return False
+                    self.func(*self.args)
 
     def get_rect(self):
         return (self.x, self.y, self.width, self.height)
@@ -49,7 +48,7 @@ def menu():
     x = padding
     y = padding
     for sort in sorts:
-        buttons.append(Button(sort, sort, x, y, button_width, button_height))
+        buttons.append(Button(sort, x, y, button_width, button_height, func=sorting, args=(sort,)))
         y += button_height + padding
     
     while True:
@@ -60,8 +59,7 @@ def menu():
                 quit()
                 
             for button in buttons:
-                if button.handle(e):
-                    sorting(button.value)
+                button.handle(e)
 
         display.fill((0, 0, 0))
         
