@@ -76,13 +76,7 @@ def merge(data, i1, j1, i2, j2):
         
         data.wait_for_step()
         
-        if i1 >= len(a1):
-            data[i] = a2[i2]
-            i2 += 1
-        elif i2 >= len(a2):
-            data[i] = a1[i1]
-            i1 += 1
-        elif a1[i1] > a2[i2]:
+        if i1 >= len(a1) or (i2 < len(a2) and a1[i1] > a2[i2]):
             data[i] = a2[i2]
             i2 += 1
         else:
