@@ -15,39 +15,31 @@ def perform(func, data):
     return thread
 
 @is_sort
-def bogo_sort(data):
-    while True:
-        data.wait_for_step()
-        random.shuffle(data)
-        last = 0
-        for i in range(len(data)):
-            data.set_active_positions([i])
-            data.wait_for_step()
-            x = data[i]
-            if x < last:
-                break
-            last = x
-        else:
-            break
-        data.set_active_positions([])
+def quick_sort(data, lo=None, hi=None):
+    if lo is None:
+        lo = 0
+    if hi is None:
+        hi = len(data) - 1
+    if lo < hi:
+        p = partition(data, lo, hi)
+        quick_sort(data, lo, p - 1)
+        quick_sort(data, p + 1, hi)
 
-@is_sort
-def bubble_sort(data):
-    for i in range(len(data) - 1, 1, -1):
-        flag = False
-        for j in range(i):
-            if data[j] > data[j + 1]:
-                flag = True
-                
-                data.set_active_positions([j, j + 1])
-                data.wait_for_step()
-                
-                data[j], data[j + 1] = data[j + 1], data[j]
+def partition(data, lo, hi):
+    
+    data.set_active_positions([x for x in range(lo, hi+1)])
+    
+    pivot = data[hi]
+    i = lo
+    for j in range(lo, hi):
+        if data[j] < pivot:
             
-        data.sorted_positions.append(i)
-
-        if not flag:
-            break
+            data.wait_for_step()
+            
+            data[i], data[j] = data[j], data[i]
+            i += 1
+    data[i], data[hi] = data[hi], data[i]
+    return i
 
 @is_sort
 def merge_sort(data, i=None, j=None):
@@ -83,3 +75,58 @@ def merge(data, i1, j1, i2, j2):
             data[i] = a1[i1]
             i1 += 1
         i += 1
+
+@is_sort
+def bubble_sort(data):
+    for i in range(len(data) - 1, 1, -1):
+        flag = False
+        for j in range(i):
+            if data[j] > data[j + 1]:
+                flag = True
+                
+                data.set_active_positions([j, j + 1])
+                data.wait_for_step()
+                
+                data[j], data[j + 1] = data[j + 1], data[j]
+            
+        data.sorted_positions.append(i)
+
+        if not flag:
+            break
+
+@is_sort
+def insertion_sort(data):
+    for i in range(1, len(data)):
+        
+        v = data[i]
+        j = i - 1
+        
+        while data[j] > v and j >= 0:
+            
+            data.set_active_positions([j])
+            data.wait_for_step()
+            
+            data[j + 1] = data[j]
+            j -= 1
+            
+        data[j + 1] = v
+    
+@is_sort
+def bogo_sort(data):
+    while True:
+        data.wait_for_step()
+        random.shuffle(data)
+        last = 0
+        for i in range(len(data)):
+            
+            data.set_active_positions([i])
+            data.wait_for_step()
+            
+            x = data[i]
+            if x < last:
+                break
+            last = x
+        else:
+            break
+            
+        data.set_active_positions([])
