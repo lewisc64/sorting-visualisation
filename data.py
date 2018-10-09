@@ -51,7 +51,9 @@ class Data:
         while self.step_through and not self.do_step:
             pass
         if self.delay > 0:
-            time.sleep(self.delay)
+            t = time.time()
+            while time.time() - t < self.delay:
+                pass
         self.do_step = False
 
     def get_color(self, i):
