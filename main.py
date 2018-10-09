@@ -71,11 +71,11 @@ def menu():
         
 
 def sorting(method):
-    n = 800
+    n = 200
     values = [int((x / n) * WIDTH) for x in range(n)]
     random.shuffle(values)
     data = Data(values)
-    data.delay = 0.00000000001
+    data.delay = 0.01
     thread = perform(method, data)
 
     while thread.isAlive():
