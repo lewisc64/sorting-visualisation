@@ -46,9 +46,9 @@ def partition(data, lo, hi):
 def radix_sort_lsd(data):
     buckets = [[] for x in range(10)]
 
-    largest = 10 ** 2
+    largest = 1
     digit = 1
-    while digit <= int(math.log(largest, 10)) + 1:
+    while 10 ** (digit - 1) <= largest:
         
         for i in range(len(data)):
 
