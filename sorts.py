@@ -42,11 +42,6 @@ def partition(data, lo, hi):
     data[i], data[hi] = data[hi], data[i]
     return i
 
-def get_digit(n, i):
-    for x in range(i - 1):
-        n //= 10
-    return n % 10
-
 @is_sort
 def radix_sort_lsd(data):
     buckets = [[] for x in range(10)]
@@ -65,7 +60,7 @@ def radix_sort_lsd(data):
                 if largest is None or n > largest:
                     largest = n
             
-            buckets[get_digit(n, digit)].append(n)
+            buckets[(n // 10 ** (digit - 1)) % 10].append(n)
 
         i = 0
         for bucket in buckets:

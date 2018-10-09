@@ -92,8 +92,6 @@ def sorting(method):
 
         pygame.display.update()
 
-    print("list accesses:", data.list_accesses)
-
 if __name__ == "__main__":
     menu()
 
