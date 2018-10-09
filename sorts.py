@@ -1,5 +1,6 @@
 import threading
 import random
+import math
 
 sorts = {}
 def is_sort(func):
@@ -40,6 +41,43 @@ def partition(data, lo, hi):
             i += 1
     data[i], data[hi] = data[hi], data[i]
     return i
+
+def get_digit(n, i):
+    for x in range(i - 1):
+        n //= 10
+    return n % 10
+
+@is_sort
+def radix_sort_lsd(data):
+    buckets = [[] for x in range(10)]
+
+    largest = 10 ** 2
+    digit = 1
+    while digit <= int(math.log(largest, 10)) + 1:
+        
+        for i in range(len(data)):
+
+            data.set_active_positions([i])
+            data.wait_for_step()
+
+            n = data[i]
+            if digit == 1:
+                if largest is None or n > largest:
+                    largest = n
+            
+            buckets[get_digit(n, digit)].append(n)
+
+        i = 0
+        for bucket in buckets:
+            while len(bucket) > 0:
+
+                data.set_active_positions([i])
+                data.wait_for_step()
+                
+                data[i] = bucket.pop(0)
+                i += 1
+            
+        digit += 1
 
 @is_sort
 def merge_sort(data, i=None, j=None):

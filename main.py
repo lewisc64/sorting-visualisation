@@ -71,11 +71,11 @@ def menu():
         
 
 def sorting(method):
-    n = 200
+    n = 800
     values = [int((x / n) * WIDTH) for x in range(n)]
     random.shuffle(values)
     data = Data(values)
-    data.delay = 0.01
+    data.delay = 0.00000000001
     thread = perform(method, data)
 
     while thread.isAlive():
@@ -91,6 +91,8 @@ def sorting(method):
         data.draw(display, 0, 0, WIDTH, HEIGHT)
 
         pygame.display.update()
+
+    print("list accesses:", data.list_accesses)
 
 if __name__ == "__main__":
     menu()
