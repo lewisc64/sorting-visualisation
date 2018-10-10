@@ -87,6 +87,11 @@ def sorting(method):
             elif e.type == pygame.KEYUP:
                 if e.key == pygame.K_ESCAPE:
                     data.delay = 0
+            elif e.type == pygame.MOUSEBUTTONDOWN:
+                if e.button == 4:
+                    data.delay /= 2
+                elif e.button == 5:
+                    data.delay *= 2
         
         data.draw(display, 0, 0, WIDTH, HEIGHT)
 
