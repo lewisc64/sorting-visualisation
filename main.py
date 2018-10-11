@@ -1,6 +1,7 @@
 import pygame
 import time
 import random
+import augen
 
 from sorts import *
 from data import *
@@ -76,8 +77,10 @@ def sorting(method):
     random.shuffle(values)
     data = Data(values)
     data.delay = 0.01
+    
     thread = perform(method, data)
-
+    play_audio(data, thread)
+    
     while thread.isAlive():
         for e in pygame.event.get():
             if e.type == pygame.QUIT:
