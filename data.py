@@ -4,11 +4,15 @@ import time
 import math
 import struct
 
-import pyaudio
-p = pyaudio.PyAudio()
-audio_device_index = p.get_default_output_device_info()["index"]
-sample_rate = 44100
-chunk_size = 1024
+PYADUIO = True
+try:
+    import pyaudio
+    p = pyaudio.PyAudio()
+    audio_device_index = p.get_default_output_device_info()["index"]
+    sample_rate = 44100
+    chunk_size = 1024
+except:
+    PYADUIO = False
 
 def audio_function(n, f):
     return int(math.sin(n * 2 * math.pi * f / sample_rate) * 8000)
@@ -42,9 +46,10 @@ def audio_loop(data, thread):
     stream.close()
     
 def play_audio(data, sort_thread):
-    thread = threading.Thread(target=audio_loop, args=(data, sort_thread))
-    thread.start()
-    return thread
+    if PYADUIO:
+        thread = threading.Thread(target=audio_loop, args=(data, sort_thread))
+        thread.start()
+        return thread
 
 class Data:
     def __init__(self, values=None):

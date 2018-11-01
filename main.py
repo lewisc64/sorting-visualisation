@@ -1,7 +1,6 @@
 import pygame
 import time
 import random
-import augen
 
 from sorts import *
 from data import *
@@ -72,7 +71,7 @@ def menu():
         
 
 def sorting(method):
-    n = 200
+    n = 800
     values = [int((x / n) * WIDTH) for x in range(n)]
     random.shuffle(values)
     data = Data(values)
