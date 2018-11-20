@@ -15,6 +15,33 @@ def perform(func, data):
     thread.start()
     return thread
 
+def heapify(data, length, i=1):
+    if i * 2 <= length:
+        if i * 2 == length or data[i * 2 - 1] > data[i * 2]:
+            j = i * 2
+        else:
+            j = i * 2 + 1
+        if data[i-1] < data[j - 1]:
+
+            data.wait_for_step()
+            
+            data[i - 1], data[j - 1] = data[j - 1], data[i - 1]
+            if i >= 2:
+                heapify(data, length, i // 2)
+        heapify(data, length, i * 2)
+        heapify(data, length, i * 2 + 1)
+
+@is_sort
+def heap_sort(data):
+    for x in range(len(data)):
+        heapify(data, len(data) - x)
+
+        data.wait_for_step()
+        
+        data[0], data[len(data) - x - 1] = data[len(data) - x - 1], data[0]
+
+        data.sorted_positions.append(len(data) - x - 1)
+
 @is_sort
 def quick_sort(data, lo=None, hi=None):
     if lo is None:
