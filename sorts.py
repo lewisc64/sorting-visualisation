@@ -15,26 +15,35 @@ def perform(func, data):
     thread.start()
     return thread
 
-def heapify(data, length, i=1):
-    if i * 2 <= length:
+def heapify(data):
+    for i in range(len(data) // 2, 0, -1):
+        sink_node(data, len(data), i)
+
+def sink_node(data, length=None, i=1):
+    if length is None:
+        length = len(data)
+    if i >= 1 and i <= length // 2:
+        
         if i * 2 == length or data[i * 2 - 1] > data[i * 2]:
             j = i * 2
         else:
             j = i * 2 + 1
-        if data[i-1] < data[j - 1]:
-
-            data.wait_for_step()
+        if data[i - 1] < data[j - 1]:
+                
+            if hasattr(data, "wait_for_step"):
+                data.wait_for_step()
             
             data[i - 1], data[j - 1] = data[j - 1], data[i - 1]
-            if i >= 2:
-                heapify(data, length, i // 2)
-        heapify(data, length, i * 2)
-        heapify(data, length, i * 2 + 1)
+
+            sink_node(data, length, j)
 
 @is_sort
 def heap_sort(data):
+
+    heapify(data)
+    
     for x in range(len(data)):
-        heapify(data, len(data) - x)
+        sink_node(data, len(data) - x)
 
         data.wait_for_step()
         
